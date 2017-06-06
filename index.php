@@ -1,5 +1,5 @@
 <?php
-include 'phppart.php';
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,7 +24,8 @@ include 'phppart.php';
     		<div class="form-group">
       		<label for="form_inputstr">Write your command here:
       		</label>
-      		<textarea class="form-control" id="textarea_inputtext" rows="4" cols="50"  placeholder="Enter legit command(look at description below)" name="input_str"></textarea>
+      		<textarea class="form-control" id="textarea_inputtext" rows="4" cols="50"  placeholder="Enter legit command(look at description below). 
+For example: Type:Write;Name:writeToDB;Parameters:name,age,school,country;Return value:Bool" name="input_str">Type:Write;Name:writeToDB;Parameters:name,age,school,country;Return value:Bool</textarea>
       		<input type="submit">
     		</div>
 		</form>    
@@ -58,9 +59,9 @@ include 'phppart.php';
 			6) Delete(connection,id_of_deleting_record)<br><br>
 			The <strong>Return Value</strong> is value that will be returned if operation is successful. For successful operation it will be 1,true
 			"true", for unsuccessful it will be 0,false,"false". This parameter can have values:<br>
-			1) string - for "true"/"false"<br>
-			2) int - for 1/0;<br>
-			3) bool - for true/false;<br>
+			1) String - for "true"/"false"<br>
+			2) Int - for 1/0;<br>
+			3) Bool - for true/false;<br>
 			<br><br><br>
 
 		</div> 
