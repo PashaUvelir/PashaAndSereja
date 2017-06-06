@@ -8,7 +8,8 @@ $final_string = "";
 $body_of_method = "";
 $name_of_function = "";
 $parameter_of_function = "";
-
+$return_value_variable_true = "";
+$return_value_variable_false = "";
 $error_message = "";
 
 if( $_POST['input_str'] != null ){ 
@@ -39,6 +40,23 @@ if( $_POST['input_str'] != null ){
   */
   //checking Type
    /* this is suppose to define what code to return */
+   //checking return value
+  /* this is suppose to concatenate to the end of returned code*/
+   switch($return_value) 
+  {
+    case "String" : 
+    	$return_value_variable_true = "'true'";
+    	$return_value_variable_false = "'false'";
+      break;
+    case "Int" :  
+		$return_value_variable_true = 1;
+    	$return_value_variable_false = 0;
+     break;
+    case "Bool" :  
+		$return_value_variable_true = TRUE;
+    	$return_value_variable_false = FALSE;
+    break;
+  }
   switch($type){
   	case "CreateConnection": 
   	/*
@@ -63,6 +81,7 @@ if( $_POST['input_str'] != null ){
    // echo $name_of_function . '<br>' ;
 
      $body_of_method = '
+</br>$err_message  = "";     
 </br>$servername =$'. $parameters[0]. ';'. '
 </br>$username =$'. $parameters[1]. ';'. '
 </br>$password =$'. $parameters[2]. ';'. '
@@ -73,9 +92,14 @@ if( $_POST['input_str'] != null ){
 </br>// Check connection
 </br>if ($conn->connect_error) {
 </br>    die("Connection failed: " . $conn->connect_error);
-</br>} ';
+</br> $err_message ="err";
+</br> } 
+';
 //echo $body_of_method . '<br>';
 //something about return value
+$body_of_method = $body_of_method . '<br>if($err_message != NULL){
+<br>return '. $return_value_variable_false . ";<br>}else{" . 
+"<br>return ".$return_value_variable_true .";} " ;
 $final_string = $name_of_function . $body_of_method . ' <br>}';
 echo $final_string;  // <-- this is 'method'(final string) that we are getting from out code and printing to user
   	break;
@@ -88,14 +112,8 @@ echo $final_string;  // <-- this is 'method'(final string) that we are getting f
 	case "Update" :  break;
 	case "Delete" :   break;
   }
-  //checking return value
-  /* this is suppose to concatenate to the end of returned code*/
-  switch($return_value) 
-  {
-    case "String" : $return ; break;
-    case "Int" :   break;
-    case "Bool" :  break;
-  }
+  
+  
 
 }
 ?>
