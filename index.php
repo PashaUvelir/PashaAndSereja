@@ -1,5 +1,10 @@
 <?php
+session_start();
+$final_string = "";
+if($_SESSION['str_output'] != NULL){
+ $final_string = $_SESSION['str_output'];
 
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,7 +30,7 @@
       		<label for="form_inputstr">Write your command here:
       		</label>
       		<textarea class="form-control" id="textarea_inputtext" rows="4" cols="50"  placeholder="Enter legit command(look at description below). 
-For example: Type:Write;Name:writeToDB;Parameters:name,age,school,country;Return value:Bool" name="input_str">Type:CreateConnection;Name:writeToDB;Parameters:name,age,school,country;Return value:Bool</textarea>
+For example: Type:Write;Name:writeToDB;Parameters:name,age,school,country;Return value:Bool" name="input_str">Type:CreateTB;Name:writeToDB;Parameters:Connectishe,myTable,id,age,familyname,country;Return value:Bool</textarea>
       		<input type="submit">
     		</div>
 		</form>    
@@ -34,7 +39,7 @@ For example: Type:Write;Name:writeToDB;Parameters:name,age,school,country;Return
     		<div class="form-group">
       		<label for="output_inputstr">Your code is:
       		</label>
-      		<textarea class="form-control" id="textarea_outputtext" rows="12" cols="50"  name="output_str"></textarea>
+      		<textarea class="form-control" id="textarea_outputtext" rows="12" cols="50"  name="output_str"><?php echo $final_string;?></textarea>
       		
     		</div>
 		</form>   
