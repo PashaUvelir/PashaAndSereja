@@ -259,8 +259,96 @@ $final_string = $name_of_function . $body_of_method . ' }';
 $_SESSION['str_output'] = $final_string;
 //echo $final_string; // <-- this is 'method'(final string) that we are getting from out code and printing to user
 	 break;
-	case "Read" :   break;
-	case "Update" :  break;
+	case "Read" :  
+	$name_of_function = 'function ' . $name . '(';
+    $intermidiate_var = "";
+    $comma_detector = true;
+    //creating name of function with parameters
+   for($x = 0; $x < 2;$x++) 
+    {
+    	if($x === 2-1 ) $comma_detector = false;
+   		if($comma_detector === true){
+  		$intermidiate_var = $intermidiate_var .  "$" . $parameters[$x] . ',' ;
+    	}else{
+    	$intermidiate_var = $intermidiate_var .  "$" . $parameters[$x] ;
+    }
+  	
+    }
+    $intermidiate_var = $intermidiate_var ."){ ";
+//declaration of function and variables in it created
+    $name_of_function = $name_of_function . $intermidiate_var ;	
+    $body_of_method = '
+    $sql = "SELECT * FROM $'. $parameters[1] . '";';
+ $body_of_method = $body_of_method . '
+ $result = mysqli_query($'.$parameters[0] . ', $sql);
+ if(mysqli_num_rows($result) > 0){
+ 	return $result;
+ }
+ else{
+ return '. $return_value_variable_false .';	
+ }
+ mysqli_close($'. $parameters[0] .  ');' ;
+$final_string = $name_of_function . $body_of_method . '
+ }';
+$_SESSION['str_output'] = $final_string ;
+	 break;
+	case "Update" : 
+	/*$sql = "UPDATE MyGuests SET lastname='Doe' WHERE id=2";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+	*/
+$name_of_function = 'function ' . $name . '(';
+    $intermidiate_var = "";
+    $comma_detector = true;
+    //creating name of function with parameters
+   for($x = 0; $x < count($parameters);$x++) 
+    {
+    	if($x === count($parameters)-1 ) $comma_detector = false;
+   		if($comma_detector === true){
+  		$intermidiate_var = $intermidiate_var .  "$" . $parameters[$x] . ',' ;
+    	}else{
+    	$intermidiate_var = $intermidiate_var .  "$" . $parameters[$x] ;
+    }
+  	
+    }
+    $intermidiate_var = $intermidiate_var ."){ ";
+//declaration of function and variables in it created
+    $name_of_function = $name_of_function . $intermidiate_var ;
+    $body_of_method = '
+    $sql = "UPDATE $' . $parameters[1] . ' SET WHERE '; 
+    //changed part for update
+    $intermidiate_var = ">REPLACE_IT_WITH_NAME_OF_COLUMN< = ";
+	$comma_detector = true;
+	for($x = 3; $x < count($parameters);$x++) {
+	if($x === count($parameters) - 1  ) $comma_detector = false;
+	if($comma_detector === true){
+	$intermidiate_var =  $intermidiate_var . "$" . $parameters[$x].   ", >REPLACE_IT_WITH_NAME_OF_COLUMN< = ";
+    
+	}else{
+    $intermidiate_var = $intermidiate_var . "$" . $parameters[$x] ;
+    $intermidiate_var = $intermidiate_var . '';
+	}
+	}
+	$body_of_method  = $body_of_method . $intermidiate_var;
+    $body_of_method = $body_of_method . ' WHERE id = $' .$parameters[2] . '";';
+
+   $body_of_method = $body_of_method . '
+   if ($'. $parameters[0] . '->query($sql) === TRUE) {
+    return' . $return_value_variable_true .';
+} else {
+    return ' . $return_value_variable_false . ';
+}';
+   // echo '<br>' .$name_of_function;
+   $final_string = $name_of_function . $body_of_method . '
+ }';
+$_SESSION['str_output'] = $final_string ;
+
+
+	 break;
 	case "Delete" :   break;
   }
   echo " <a id='link_to_prev'  href=\"javascript:history.go(-1)\" style ='visibility : hidden;'>GO BACK</a>";
@@ -269,6 +357,17 @@ $_SESSION['str_output'] = $final_string;
 </script>";
 
 
+function writeToDB($Connectishe,$myTable){ 
+    $sql = "SELECT * FROM $myTable";
+ $result = mysqli_query($Connectishe, $sql);
+ if(mysqli_num_rows($result) > 0){
+ 	return $result;
+ }
+ else{
+ return ;	
+ }
+ mysqli_close($Connectishe);
+ }
 
 }
 ?>

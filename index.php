@@ -30,7 +30,7 @@ if($_SESSION['str_output'] != NULL){
       		<label for="form_inputstr">Write your command here:
       		</label>
       		<textarea class="form-control" id="textarea_inputtext" rows="4" cols="50"  placeholder="Enter legit command(look at description below). 
-For example: Type:Write;Name:writeToDB;Parameters:name,age,school,country;Return value:Bool" name="input_str">Type:Write;Name:writeToDB;Parameters:Connectishe,myTable,id,age,familyname,country;Return value:Bool</textarea>
+For example: Type:Write;Name:writeToDB;Parameters:name,age,school,country;Return value:Bool" name="input_str">Type:Update;Name:writeToDB;Parameters:Connectishe,myTable,id,age,familyname,country;Return value:Bool</textarea>
       		<input type="submit">
     		</div>
 		</form>    
