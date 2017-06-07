@@ -171,11 +171,13 @@ $intermidiate_var = "";
 for($x = 3; $x < count($parameters);$x++) {
 	if($x === count($parameters) - 1  ) $comma_detector = false;
 	if($comma_detector === true){
-	$intermidiate_var = $intermidiate_var . ''. $parameters[$x].  ' VARCHAR(30) NOT NULL' . ',
-	';
+	$intermidiate_var = $intermidiate_var .  $parameters[$x].  ' VARCHAR(30) NOT NULL' . ',
+';
+    $intermidiate_var =  ltrim($intermidiate_var);
 	}else{
-    $intermidiate_var = $intermidiate_var .''.  $parameters[$x] .  ' VARCHAR(30) NOT NULL )";
-    '  ;
+    $intermidiate_var = $intermidiate_var .  $parameters[$x] .  ' VARCHAR(30) NOT NULL )";
+'  ;
+    $intermidiate_var =  ltrim($intermidiate_var);
 }
 }
 $body_of_method = $body_of_method . $intermidiate_var  ;  
@@ -191,7 +193,72 @@ $'.$parameters[0]. '->close();';
     $_SESSION['str_output'] = $final_string;
 	//echo $final_string; // <-- this is 'method'(final string) that we are getting from out code and printing to user
 	 break;
-	case "Write" :   break;
+	case "Write" :
+	//writing to DB
+	$name_of_function = 'function ' . $name . '(';
+    $intermidiate_var = "";
+    $comma_detector = true;
+    //creating name of function with parameters
+   for($x = 0; $x < count($parameters);$x++) 
+    {
+    	if($x === count($parameters)-1 ) $comma_detector = false;
+   		if($comma_detector === true){
+  		$intermidiate_var = $intermidiate_var .  "$" . $parameters[$x] . ',' ;
+    	}else{
+    	$intermidiate_var = $intermidiate_var .  "$" . $parameters[$x] ;
+    }
+  	
+    }
+    $intermidiate_var = $intermidiate_var ."){ ";
+//declaration of function and variables in it created
+    $name_of_function = $name_of_function . $intermidiate_var ;
+   // echo '<br>' .$name_of_function;
+
+    $body_of_method = '
+$sql = "INSERT INTO  $' . $parameters[1] . "(";
+  	$intermidiate_var = "";
+	$comma_detector = true;
+	for($x = 2; $x < count($parameters);$x++) {
+	if($x === count($parameters) - 1  ) $comma_detector = false;
+	if($comma_detector === true){
+	$intermidiate_var =  $intermidiate_var .  "YOUR_COLUMN".   ",";
+    
+	}else{
+    $intermidiate_var = $intermidiate_var .  "YOUR_COLUMN" . ")";
+    $intermidiate_var = $intermidiate_var . '
+';
+	}
+
+}
+$body_of_method = $body_of_method . $intermidiate_var;
+$body_of_method = $body_of_method . 'VALUES(';
+
+	$intermidiate_var = "";
+	$comma_detector = true;
+	for($x = 2; $x < count($parameters);$x++) {
+	if($x === count($parameters) - 1  ) $comma_detector = false;
+	if($comma_detector === true){
+	$intermidiate_var =  $intermidiate_var . "$" . $parameters[$x].   ",";
+    
+	}else{
+    $intermidiate_var = $intermidiate_var . "$" . $parameters[$x] . ")";
+    $intermidiate_var = $intermidiate_var . '";
+';
+	}
+	}
+$body_of_method = $body_of_method . $intermidiate_var  ;  
+$body_of_method = $body_of_method. 
+	'if ($'.$parameters[0] . '->query($sql) === TRUE) {
+   return ' . $return_value_variable_true . ';
+	} else {
+    return ' . $return_value_variable_false . ';
+}
+
+$' .$parameters[0] .'->close();';
+$final_string = $name_of_function . $body_of_method . ' }';
+$_SESSION['str_output'] = $final_string;
+//echo $final_string; // <-- this is 'method'(final string) that we are getting from out code and printing to user
+	 break;
 	case "Read" :   break;
 	case "Update" :  break;
 	case "Delete" :   break;
