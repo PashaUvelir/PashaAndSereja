@@ -59,6 +59,11 @@ if( $_POST['input_str'] != null )
     	$return_value_variable_false = FALSE;
     break;
   }
+  //loop through parameters so that they all trimmed(others are trimmed earlier);
+   for($x =0;$x < count($parameters) ; $x++){
+   	$parameters[$x] = trim($parameters[$x]);
+   }
+   //checking correctness of type
   switch($type){
   	case "CreateConnection": 
   	/*
@@ -215,7 +220,7 @@ $'.$parameters[0]. '->close();';
    // echo '<br>' .$name_of_function;
 
     $body_of_method = '
-$sql = "INSERT INTO  $' . $parameters[1] . "(";
+$sql = "INSERT INTO  $' . $parameters[1] . " (";
   	$intermidiate_var = "";
 	$comma_detector = true;
 	for($x = 2; $x < count($parameters);$x++) {
@@ -341,7 +346,8 @@ $name_of_function = 'function ' . $name . '(';
     return' . $return_value_variable_true .';
 } else {
     return ' . $return_value_variable_false . ';
-}';
+}
+$' .$parameters[0]. '->close();';
    // echo '<br>' .$name_of_function;
    $final_string = $name_of_function . $body_of_method . '
  }';
@@ -349,25 +355,54 @@ $_SESSION['str_output'] = $final_string ;
 
 
 	 break;
-	case "Delete" :   break;
+	case "Delete" : 
+	/*
+	$sql = "DELETE FROM MyGuests WHERE id=3";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Record deleted successfully";
+} else {
+    echo "Error deleting record: " . $conn->error;
+}
+
+$conn->close();
+	*/
+$name_of_function = 'function ' . $name . '(';
+    $intermidiate_var = "";
+    $comma_detector = true;
+    //creating name of function with parameters
+   for($x = 0; $x < count($parameters);$x++) 
+    {
+    	if($x === count($parameters)-1 ) $comma_detector = false;
+   		if($comma_detector === true){
+  		$intermidiate_var = $intermidiate_var .  "$" . $parameters[$x] . ',' ;
+    	}else{
+    	$intermidiate_var = $intermidiate_var .  "$" . $parameters[$x] ;
+    }
+  	
+    }
+    $intermidiate_var = $intermidiate_var ."){ ";
+//declaration of function and variables in it created
+    $name_of_function = $name_of_function . $intermidiate_var ;
+    $body_of_method = '
+    $sql = "DELETE FROM $' . $parameters[1] . ' WHERE   >REPLACE_IT_WITH_NAME_OF_COLUMN< =  $' . $parameters[2] . '";'; 
+	
+$body_of_method = $body_of_method . '
+if ($' . $parameters[0] . '->query($sql) === TRUE) {
+return ' . $return_value_variable_true .';
+} else {
+    return ' . $return_value_variable_false . ';
+}
+mysqli_close($'.$parameters[0] . ');';
+  $final_string = $name_of_function . $body_of_method . '
+ }';
+$_SESSION['str_output'] = $final_string ;
+
+	  break;
   }
   echo " <a id='link_to_prev'  href=\"javascript:history.go(-1)\" style ='visibility : hidden;'>GO BACK</a>";
   echo "<script>
     document.getElementById('link_to_prev').click();
 </script>";
-
-
-function writeToDB($Connectishe,$myTable){ 
-    $sql = "SELECT * FROM $myTable";
- $result = mysqli_query($Connectishe, $sql);
- if(mysqli_num_rows($result) > 0){
- 	return $result;
- }
- else{
- return ;	
- }
- mysqli_close($Connectishe);
- }
-
 }
 ?>

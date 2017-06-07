@@ -30,7 +30,7 @@ if($_SESSION['str_output'] != NULL){
       		<label for="form_inputstr">Write your command here:
       		</label>
       		<textarea class="form-control" id="textarea_inputtext" rows="4" cols="50"  placeholder="Enter legit command(look at description below). 
-For example: Type:Write;Name:writeToDB;Parameters:name,age,school,country;Return value:Bool" name="input_str">Type:Update;Name:writeToDB;Parameters:Connectishe,myTable,id,age,familyname,country;Return value:Bool</textarea>
+For example: Type:Write;Name:writeToDB;Parameters:name,age,school,country;Return value:Bool" name="input_str">Type: Delete;Name: writeToDB;Parameters: Connectishe,myTable,id,age,familyname,country;Return value:Bool</textarea>
       		<input type="submit">
     		</div>
 		</form>    
@@ -45,6 +45,7 @@ For example: Type:Write;Name:writeToDB;Parameters:name,age,school,country;Return
 		</form>   
 		<div id="div_instruction">Instruction:<br></div>
 		<div> 
+			<strong>All identifiers should be divide by ; symbol </strong><br>
 			The <strong>Type</strong> is type of operation you plan to do: <br>
 			1) CreateConnection - if you want to create connection(<strong>needed to all others methods</strong>) <br>
 			2) CreateDB -if you want to create database<br>
@@ -57,13 +58,15 @@ For example: Type:Write;Name:writeToDB;Parameters:name,age,school,country;Return
 			The <strong>Parameters</strong> is the parameters that method will have. First
 			paramater must be <i>connection</i> for all(excluding CreateConnection) <strong>Types</strong> <br>
 			Others parameters are: <br>
-			1) CreateConnection : 1 - name of server, 2 - user name for connection, 3 - password for connecting<br>
-			2) CreateDB : 1- connection that you can get from 'CreateConnection' or your own connection, 2 - name of database<br>
-			3) CreateTB(connection,name_of_db,name_of_table_to_create,parameter1,parameter2,parameter3...parameterN)<br>
-			4) Write(connection,table_name,parameter1,parameter2,parameter3...parameterN)<br>
-			5) Read(connection,table_name)<br>
-			6) Update(connection,id_of_upgrading_record,parameter1,parameter2,parameter3...parameterN)<br>
-			7) Delete(connection,id_of_deleting_record)<br><br>
+			1) CreateConnection : 1 - name of server, 2 - user name for connection, 3 - password for connecting . Maximum number of parameters : 3 <br>
+			2) CreateDB : 1- connection that you can get from 'CreateConnection' or your own connection, 2 - name of database to be created . Maximum number of parameters : 2<br>
+			3) CreateTB : 1 - connection that you can get from 'CreateConnection' or your own connection, 2 - name of existing database, 3 - name of table to be created , 4 - name of column id(you can call it whatever you want but it will behave like id anyway),
+			 5-and-further - names of other columns in table . Maximum number of parameters : N <br>
+			4) Write : 1 - connection that you can get from 'CreateConnection' or your own connection, 2 - name of table, 3-and-further - values to insert . Maximum number of parameters : N <br>
+			5) Read : 1 - connection that you can get from 'CreateConnection' or your own connection, 2 - name of table. Maximum number of parameters : 2 <br>
+			6) Update : 1 - connection that you can get from 'CreateConnection' or your own connection, 2 - name of table, 3 - id of upgrading record, 
+			4-and-further - values that will be inserted. Maximum number of parameters : N <br>
+			7) Delete : 1 - connection that you can get from 'CreateConnection' or your own connection, 2 - any parameter that will be clause to identify which row is being updated. Maximum number of parameters : 2<br><br>
 			The <strong>Return Value</strong> is value that will be returned if operation is successful. For successful operation it will be 1,true
 			"true", for unsuccessful it will be 0,false,"false". This parameter can have values:<br>
 			1) String - for "true"/"false"<br>
